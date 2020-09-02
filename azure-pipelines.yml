@@ -29,12 +29,16 @@ steps:
 
 - powershell: gci env:* | sort-object name | Format-Table -AutoSize | Out-File $env:BUILD_ARTIFACTSTAGINGDIRECTORY/environment-variables.txt
 
-- task: CopyFiles@2
+# cURL upload files
+# Use cURL's supported protocols to upload files
+- task: cURLUploader@2
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**/$(BuildConfiguration)/**/?(*.egg)'
-    targetFolder: 'https://krogerhdiwasbhdistorage.blob.core.windows.net/gitcode'
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: 'https://krogerhdiwasbhdistorage.blob.core.windows.net/gitcode'
-    artifactName: drop
+    files: '**'
+    #authType: 'ServiceEndpoint' # Optional. Options: serviceEndpoint, userAndPass
+    serviceEndpoint: 'https://krogerhdiwasbhdistorage.blob.core.windows.net/gitcode'
+    #username: # Optional
+    #password: # Optional
+    #url: # Required when authType == UserAndPass
+    #remotePath: 'upload/$(Build.BuildId)/' # Optional
+    #options: # Optional
+    #redirectStderr: true # Optional
