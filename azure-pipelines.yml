@@ -26,3 +26,15 @@ steps:
     pip install -r requirements.txt
     python setup.py bdist_egg
   displayName: 'Install dependencies'
+
+- powershell: gci env:* | sort-object name | Format-Table -AutoSize | Out-File $env:BUILD_ARTIFACTSTAGINGDIRECTORY/environment-variables.txt
+
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '**/$(BuildConfiguration)/**/?(*.egg)'
+    targetFolder: 'https://krogerhdiwasbhdistorage.blob.core.windows.net/gitcode'
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: 'https://krogerhdiwasbhdistorage.blob.core.windows.net/gitcode'
+    artifactName: drop
