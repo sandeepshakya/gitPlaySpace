@@ -27,13 +27,21 @@ steps:
     python setup.py bdist_egg
   displayName: 'Install dependencies'
 
+- task: AzureFileCopy@4
+  inputs:
+    SourcePath: '*.egg'
+    azureSubscription: 'IDW Azure Subscription (d13d7140-9a5a-4616-8fa3-d583e7a1072e)'
+    Destination: 'AzureBlob'
+    storage: 'krogerhdiwasbhdistorage'
+    ContainerName: 'gitcode'
+    
 # cURL upload files
 # Use cURL's supported protocols to upload files
-- task: cURLUploader@2
-  inputs:
-    files: '**'
+#- task: cURLUploader@2
+  #inputs:
+    #files: '**'
     #authType: 'ServiceEndpoint' # Optional. Options: serviceEndpoint, userAndPass
-    serviceEndpoint: 'https://krogerhdiwasbhdistorage.blob.core.windows.net/gitcode'
+    #serviceEndpoint: 'https://krogerhdiwasbhdistorage.blob.core.windows.net/gitcode'
     #username: # Optional
     #password: # Optional
     #url: # Required when authType == UserAndPass
