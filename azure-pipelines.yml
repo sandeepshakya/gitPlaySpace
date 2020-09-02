@@ -27,8 +27,6 @@ steps:
     python setup.py bdist_egg
   displayName: 'Install dependencies'
 
-- powershell: gci env:* | sort-object name | Format-Table -AutoSize | Out-File $env:BUILD_ARTIFACTSTAGINGDIRECTORY/environment-variables.txt
-
 # cURL upload files
 # Use cURL's supported protocols to upload files
 - task: cURLUploader@2
